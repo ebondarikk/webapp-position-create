@@ -11,7 +11,9 @@ tg.enableClosingConfirmation();
 
 const searchParams = new URLSearchParams(window.location.search)
 const categoriesJSON = searchParams.get("categories")?.toString() || "[]";
-const bot_id = searchParams.get("bot_id")
+const bot_id = searchParams.get("bot_id");
+tg.MainButton.setText('Сохранить');
+tg.MainButton.show();
 
 const categories = JSON.parse(categoriesJSON);
 
