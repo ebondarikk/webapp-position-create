@@ -10,7 +10,7 @@ tg.expand();
 tg.enableClosingConfirmation();
 
 const searchParams = new URLSearchParams(window.location.search)
-const categoriesJSON = searchParams.get("categories")?.toString();
+const categoriesJSON = searchParams.get("categories")?.toString() || "[]";
 const bot_id = searchParams.get("bot_id")
 
 const categories = JSON.parse(categoriesJSON);
