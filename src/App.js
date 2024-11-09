@@ -385,7 +385,7 @@ const App = ({tg, categories, bot_id}) => {
             ))}
         </div>
         <Button onClick={(addPosition)} className='btn' size='large'>Добавить другой товар</Button>
-        <Button size='large' onClick={save}>Save</Button>
+        {/* <Button size='large' onClick={save}>Save</Button> */}
       </div>
     </ConfigProvider>
   )
