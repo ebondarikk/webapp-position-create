@@ -90,7 +90,7 @@ const PositionForm = ({
       subitems = []
     }
     update({type: grouped ? 1 : 0, subitems: subitems})
-  }, [grouped])
+  }, [grouped, update])
 
   return (
     <Form
