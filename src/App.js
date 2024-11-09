@@ -243,10 +243,6 @@ const App = ({tg, categories, bot_id}) => {
     isValid: true
   }), []);
 
-  const [isValid, setIsValid] = useState(null);
-
-  const [validate, setValidate] = useState(0);
-
   const [positions, setPositions] = useState([defaultPosition()])
 
   const addPosition = useCallback(() => setPositions([...positions, defaultPosition()]), [positions, setPositions, defaultPosition])
@@ -312,7 +308,6 @@ const App = ({tg, categories, bot_id}) => {
   }, [positions, setPositions])
 
   const save = useCallback(() => {
-    setIsValid(null)
     const vPositions = validatePositions()
 
     
@@ -338,7 +333,7 @@ const App = ({tg, categories, bot_id}) => {
     }))
     }
 
-  }, [setIsValid, validatePositions, tg, bot_id, positions])
+  }, [validatePositions, tg, bot_id, positions])
 
   const deletePosition = useCallback(id => setPositions(prevPositions => prevPositions.filter(p => p.id !== id)), [setPositions])
 
