@@ -5,9 +5,19 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const tg = window.Telegram.WebApp;
+tg.expand();
+tg.enableClosingConfirmation();
+
+const searchParams = new URLSearchParams(window.location.search)
+const categoriesJSON = searchParams.get("categories")?.toString() || "[\"Пицца\",\"Бургеры\",\"Шаурма\",\"Роллы\",\"Закуски\"]";
+const bot_id = searchParams.get("bot_id")
+
+const categories = JSON.parse(categoriesJSON);
+
 root.render(
   <React.StrictMode>
-    <App />
+    <App tg={tg} categories={categories} bot_id={bot_id}/>
   </React.StrictMode>
 );
 
