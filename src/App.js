@@ -314,13 +314,13 @@ const App = ({tg, categories, bot_id}) => {
     
     console.log(vPositions.every(p => p.isValid))
     if (vPositions.every(p => p.isValid)) {
-      tg.sendData(JSON.stringify({
+      const data = JSON.stringify({
         positions: positions.map(p => ({
           name: p.title, 
           price: p.price, 
           description: p.description,
           grouped: p.type === 1,
-          image: p.image,
+          image: p.image.response.data.url,
           warehouse: p.warehouse,
           warehouseCount: p.warehouseCount,
           subitems: p.subitems.map(s => ({
@@ -331,7 +331,11 @@ const App = ({tg, categories, bot_id}) => {
         })),
         bot_id,
         'route': 'position_create'
-    }))
+      })
+      console.log(data)
+      console.log(data.length)
+
+      tg.sendData(data)
     }
 
   }, [validatePositions, tg, bot_id, positions])
