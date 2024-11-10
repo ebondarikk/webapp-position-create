@@ -49,15 +49,10 @@ const PositionForm = ({
   const [canDeleteSubitem, setCanDeleteSubitem] = useState(position.subitems.length > 1);
   const [grouped, setGrouped] = useState(position.type === 1);
 
-  const action = (file) => {
-    update({image: file.file})
-    file.onSuccess("Ok")
-    return file
-  }
-
   const update = useCallback(
     data => {
       updatePosition(position.id, data);
+      console.log(data)
     }, [updatePosition, position.id]
   );
 
@@ -104,7 +99,7 @@ const PositionForm = ({
       </ValidatedItem>
       
       <ValidatedItem label="Изображение" valuePropName="fileList" required errors={position.imageErrors}>
-        <Upload listType="picture" maxCount={1} accept='image/*' customRequest={action}>
+        <Upload listType="picture" maxCount={1} accept='image/*' action='https://tmpfiles.org/api/v1/upload' onChange={({file}) => {update({image: file})}}>
           <Button icon={<CloudUploadOutlined />}>Загрузить</Button>
         </Upload>
       </ValidatedItem>
@@ -257,6 +252,7 @@ const App = ({tg, categories, bot_id}) => {
     const vPositions = positions.map(position => {
       const titleErrors = []
       const priceErrors = []
+      const imageErrors = []
       const warehouseCountErrors = []
       const subitems = position.subitems;
       let isValid = true;
@@ -274,6 +270,10 @@ const App = ({tg, categories, bot_id}) => {
   
       if (position.warehouse && !!!position.warehouseCount) {
         warehouseCountErrors.push('Обязательное поле')
+      }
+
+      if (!!!position.image || position.image.status !== 'done') {
+        imageErrors.push('Обязательное поле')
       }
   
       subitems.map(subitem => {
@@ -297,9 +297,10 @@ const App = ({tg, categories, bot_id}) => {
       isValid = !!!titleErrors.length && 
                 !!!warehouseCountErrors.length && 
                 !!!priceErrors.length && 
+                !!!imageErrors.length &&
                 subitems.every(s => !!!s.titleErrors.length && !!!s.warehouseCountErrors.length)
 
-      return {...position, titleErrors, priceErrors, warehouseCountErrors, subitems, isValid}
+      return {...position, titleErrors, priceErrors, imageErrors, warehouseCountErrors, subitems, isValid}
     })
 
     setPositions(vPositions)
@@ -385,7 +386,7 @@ const App = ({tg, categories, bot_id}) => {
             ))}
         </div>
         <Button onClick={(addPosition)} className='btn' size='large'>Добавить другой товар</Button>
-        {/* <Button size='large' onClick={save}>Save</Button> */}
+        <Button size='large' onClick={save}>Save</Button>
       </div>
     </ConfigProvider>
   )
