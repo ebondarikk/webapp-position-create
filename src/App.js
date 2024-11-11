@@ -239,6 +239,7 @@ const App = ({tg, categories, bot_id}) => {
   }), []);
 
   const [positions, setPositions] = useState([defaultPosition()])
+  const [send, setSend] = useState(false);
 
   const addPosition = useCallback(() => setPositions([...positions, defaultPosition()]), [positions, setPositions, defaultPosition])
 
@@ -314,6 +315,13 @@ const App = ({tg, categories, bot_id}) => {
     
     console.log(vPositions.every(p => p.isValid))
     if (vPositions.every(p => p.isValid)) {
+      setSend(true)
+    }
+
+  }, [validatePositions, tg, bot_id, positions])
+
+  useEffect(() => {
+    if (send) {
       const data = JSON.stringify({
         positions: positions.map(p => ({
           name: p.title, 
@@ -337,8 +345,7 @@ const App = ({tg, categories, bot_id}) => {
 
       tg.sendData(data)
     }
-
-  }, [validatePositions, tg, bot_id, positions])
+  })
 
   const deletePosition = useCallback(id => setPositions(prevPositions => prevPositions.filter(p => p.id !== id)), [setPositions])
 
