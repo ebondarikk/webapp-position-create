@@ -318,7 +318,7 @@ const App = ({tg, categories, bot_id}) => {
       setSend(true)
     }
 
-  }, [validatePositions, tg, bot_id, positions])
+  }, [validatePositions])
 
   useEffect(() => {
     if (send) {
@@ -345,7 +345,7 @@ const App = ({tg, categories, bot_id}) => {
 
       tg.sendData(data)
     }
-  })
+  }, [send])
 
   const deletePosition = useCallback(id => setPositions(prevPositions => prevPositions.filter(p => p.id !== id)), [setPositions])
 
