@@ -310,18 +310,15 @@ const App = ({tg, categories, bot_id}) => {
   }, [positions, setPositions])
 
   const save = useCallback(() => {
-    const vPositions = validatePositions()
-
-    
-    console.log(vPositions.every(p => p.isValid))
-    if (vPositions.every(p => p.isValid)) {
-      setSend(true)
-    }
+    validatePositions()
+    setSend(true)
 
   }, [validatePositions])
 
   useEffect(() => {
-    if (send) {
+    if (send && positions.every(p => p.isValid)) {
+      console.log(send)
+      console.log(positions)
       const data = JSON.stringify({
         positions: positions.map(p => ({
           name: p.title, 
@@ -345,7 +342,10 @@ const App = ({tg, categories, bot_id}) => {
 
       tg.sendData(data)
     }
-  }, [send, positions, tg, bot_id])
+    else {
+      setSend(false)
+    }
+  }, [send, positions, tg, bot_id, setSend])
 
   const deletePosition = useCallback(id => setPositions(prevPositions => prevPositions.filter(p => p.id !== id)), [setPositions])
 
