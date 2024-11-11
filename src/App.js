@@ -345,7 +345,7 @@ const App = ({tg, categories, bot_id}) => {
 
       tg.sendData(data)
     }
-  }, [send])
+  }, [send, positions, tg, bot_id])
 
   const deletePosition = useCallback(id => setPositions(prevPositions => prevPositions.filter(p => p.id !== id)), [setPositions])
 
