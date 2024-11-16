@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import axios from 'axios';
 
 import { CloudUploadOutlined, CheckOutlined, CloseOutlined, DeleteOutlined } from '@ant-design/icons';
 import {
@@ -217,7 +218,8 @@ const PositionForm = ({
 
 }
 
-const App = ({tg, categories, bot_id}) => {
+const App = ({tg, categories, bot_id, password, host, user_id}) => {
+  const [loader, setLoader] = useState(false)
 
   const defaultPosition = useCallback(() => ({
     id: Date.now(),
@@ -315,12 +317,33 @@ const App = ({tg, categories, bot_id}) => {
 
   }, [validatePositions])
 
+  const createPositions = useCallback(async (data) => {
+    const payload = {data, password, bot_id: Number(bot_id), user_id: Number(user_id)}
+      setLoader(true)
+      await axios.post(`http://${host}/positions`, payload, {headers: {'ngrok-skip-browser-warning': 1}}).then((response) => {
+        if (response.status === 201) {
+          tg.close();
+          // setLoaded(true)
+        }
+        else if (response.status === 400) {
+          console.log(response.data)
+        }
+      }).catch((err) => {
+      }).finally(
+        () => {
+          setLoader(false)
+        })
+  }, [bot_id, host, password, tg, user_id])
+
+  useEffect(() => {
+      loader ? tg.MainButton.disable() : tg.MainButton.enable()
+  }, [loader, tg])
+
   useEffect(() => {
     if (send && positions.every(p => p.isValid)) {
       console.log(send)
       console.log(positions)
-      const data = JSON.stringify({
-        positions: positions.map(p => ({
+      const data = positions.map(p => ({
           name: p.title, 
           price: p.price, 
           description: p.description,
@@ -333,19 +356,17 @@ const App = ({tg, categories, bot_id}) => {
             warehouse: s.warehouse,
             warehouseCount: s.warehouseCount
           }))
-        })),
-        bot_id,
-        'route': 'position_create'
-      })
+        }))
       console.log(data)
       console.log(data.length)
 
-      tg.sendData(data)
+      // tg.sendData(data)
+      createPositions(data)
     }
     else {
       setSend(false)
     }
-  }, [send, positions, tg, bot_id, setSend])
+  }, [send, positions, tg, createPositions, bot_id, setSend])
 
   const deletePosition = useCallback(id => setPositions(prevPositions => prevPositions.filter(p => p.id !== id)), [setPositions])
 
@@ -397,7 +418,7 @@ const App = ({tg, categories, bot_id}) => {
             ))}
         </div>
         <Button onClick={(addPosition)} className='btn' size='large'>Добавить другой товар</Button>
-        <Button size='large' onClick={save}>Save</Button>
+        <Button size='large' onClick={save} disabled={loader}>Save</Button>
       </div>
     </ConfigProvider>
   )
