@@ -320,7 +320,7 @@ const App = ({tg, categories, bot_id, password, host, user_id, message_id}) => {
   const createPositions = useCallback(async (data) => {
     const payload = {data, password, bot_id: Number(bot_id), user_id: Number(user_id), message_id: Number(message_id)}
       setLoader(true)
-      await axios.post(`http://${host}/positions`, payload, {headers: {'ngrok-skip-browser-warning': 1}}).then((response) => {
+      await axios.post(`${host}/positions`, payload, {headers: {'ngrok-skip-browser-warning': 1}}).then((response) => {
         if (response.status === 201) {
           tg.close();
           // setLoaded(true)
