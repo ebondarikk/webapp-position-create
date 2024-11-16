@@ -15,6 +15,7 @@ const bot_id = searchParams.get("bot_id");
 const password = searchParams.get("password");
 const host = searchParams.get("host");
 const user_id = searchParams.get("user_id");
+const message_id = searchParams.get("message_id");
 tg.MainButton.setText('Сохранить');
 tg.MainButton.show();
 
@@ -22,7 +23,7 @@ const categories = JSON.parse(categoriesJSON);
 
 root.render(
   <React.StrictMode>
-    <App tg={tg} categories={categories} bot_id={bot_id} password={password} host={host} user_id={user_id}/>
+    <App tg={tg} categories={categories} bot_id={bot_id} password={password} host={host} user_id={user_id} message_id={message_id}/>
   </React.StrictMode>
 );
 
