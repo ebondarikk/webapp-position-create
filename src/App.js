@@ -333,7 +333,7 @@ const App = ({tg, categories, bot_id, password, host, user_id, message_id}) => {
         () => {
           setLoader(false)
         })
-  }, [bot_id, host, password, tg, user_id])
+  }, [bot_id, host, password, tg, user_id, message_id])
 
   useEffect(() => {
       loader ? tg.MainButton.disable() : tg.MainButton.enable()
