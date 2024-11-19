@@ -415,7 +415,7 @@ const App = ({tg, categories, bot_id, password, host, user_id, message_id}) => {
             ))}
         </div>
         <Button onClick={(addPosition)} className='btn' size='large'>Добавить другой товар</Button>
-        {/* <Button size='large' onClick={save} disabled={loader}>Save</Button> */}
+        <Button size='large' onClick={save} disabled={loader}>Save</Button>
       </div>
       </Spin>
     </ConfigProvider>
