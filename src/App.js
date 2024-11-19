@@ -11,7 +11,8 @@ import {
   Select,
   Switch,
   Upload,
-  ConfigProvider
+  ConfigProvider,
+  Spin
 } from 'antd';
 
 import './App.css';
@@ -95,7 +96,7 @@ const PositionForm = ({
       layout="horizontal"
       style={{ maxWidth: 600 }}
     >
-      <ValidatedItem label="Название" required errors={position.titleErrors}>
+      <ValidatedItem label="Название" id={`${position.id}_title`} required errors={position.titleErrors}>
         <Input status={!!position.titleErrors.length && 'error'} value={position.title} onChange={e => update({title: e.target.value})}/>
       </ValidatedItem>
       
@@ -308,7 +309,6 @@ const App = ({tg, categories, bot_id, password, host, user_id, message_id}) => {
 
     setPositions(vPositions)
 
-    return vPositions;
   }, [positions, setPositions])
 
   const save = useCallback(() => {
@@ -321,22 +321,18 @@ const App = ({tg, categories, bot_id, password, host, user_id, message_id}) => {
     const payload = {data, password, bot_id: Number(bot_id), user_id: Number(user_id), message_id: Number(message_id)}
       setLoader(true)
       await axios.post(`${host}/positions`, payload, {headers: {'ngrok-skip-browser-warning': 1}}).then((response) => {
-        if (response.status === 201) {
-          tg.close();
-          // setLoaded(true)
-        }
-        else if (response.status === 400) {
+        if (response.status === 400) {
           console.log(response.data)
         }
-      }).catch((err) => {
       }).finally(
         () => {
+          tg.close()
           setLoader(false)
         })
   }, [bot_id, host, password, tg, user_id, message_id])
 
   useEffect(() => {
-      loader ? tg.MainButton.disable() : tg.MainButton.enable()
+      tg.MainButton.isActive = !loader;
   }, [loader, tg])
 
   useEffect(() => {
@@ -404,6 +400,7 @@ const App = ({tg, categories, bot_id, password, host, user_id, message_id}) => {
         },
       }}
     >
+      <Spin spinning={loader}>
       <div className='form'>
         <div>
           {positions.map(p => (
@@ -420,6 +417,7 @@ const App = ({tg, categories, bot_id, password, host, user_id, message_id}) => {
         <Button onClick={(addPosition)} className='btn' size='large'>Добавить другой товар</Button>
         <Button size='large' onClick={save} disabled={loader}>Save</Button>
       </div>
+      </Spin>
     </ConfigProvider>
   )
 }
