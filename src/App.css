@@ -11,6 +11,10 @@ body {
   margin: 1rem 0;
 }
 
+.ant-spin-dot {
+  color: var(--tg-theme-button-color) !important;
+}
+
 .ant-upload-list {
   color: var(--tg-theme-text-color);
 }
