@@ -219,7 +219,7 @@ const PositionForm = ({
 
 }
 
-const App = ({tg, categories, bot_id, password, host, user_id, message_id}) => {
+const App = ({tg, categories, bot_id, password, host, user_id, message_id, show_save}) => {
   const [loader, setLoader] = useState(false)
 
   const defaultPosition = useCallback(() => ({
@@ -415,7 +415,7 @@ const App = ({tg, categories, bot_id, password, host, user_id, message_id}) => {
             ))}
         </div>
         <Button onClick={(addPosition)} className='btn' size='large'>Добавить другой товар</Button>
-        {/* <Button size='large' onClick={save} disabled={loader}>Save</Button> */}
+        {!!show_save && <Button size='large' onClick={save} disabled={loader}>Save</Button>}
       </div>
       </Spin>
     </ConfigProvider>
