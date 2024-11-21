@@ -42,6 +42,8 @@ const PositionForm = ({
   categories,
   canDelete,
   deletePosition,
+  userId,
+  host,
   validate
 }) => {
   categories = categories.map(c => ({label: c, value: c}));
@@ -101,7 +103,7 @@ const PositionForm = ({
       </ValidatedItem>
       
       <ValidatedItem label="Изображение" valuePropName="fileList" required errors={position.imageErrors}>
-        <Upload listType="picture" maxCount={1} accept='image/*' action='https://tmpfiles.org/api/v1/upload' onChange={({file}) => {update({image: file})}}>
+        <Upload listType="picture" maxCount={1} accept='image/*' action={`${host}/upload/${userId}`} onChange={({file}) => {update({image: file})}}>
           <Button icon={<CloudUploadOutlined />}>Загрузить</Button>
         </Upload>
       </ValidatedItem>
@@ -344,7 +346,7 @@ const App = ({tg, categories, bot_id, password, host, user_id, message_id, show_
           price: p.price, 
           description: p.description,
           grouped: p.type === 1,
-          image: p.image.response.data.url,
+          image: p.image.response.path,
           warehouse: p.warehouse,
           warehouseCount: p.warehouseCount,
           subitems: p.subitems.map(s => ({
@@ -411,6 +413,8 @@ const App = ({tg, categories, bot_id, password, host, user_id, message_id, show_
                 position={p} 
                 categories={categories} 
                 updatePosition={updatePosition}
+                userId={user_id}
+                host={host}
               />
             ))}
         </div>
