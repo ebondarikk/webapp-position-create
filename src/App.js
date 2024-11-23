@@ -70,8 +70,12 @@ const PositionForm = ({
   }, [update, position])
 
   const updateGrouped = useCallback((e) => {
+    if (e.target.value === 1) {
+      update({warehouse: false, warehouseCount: ""})
+      setChecked(false);
+    }
     setGrouped(e.target.value === 1);
-  }, [setGrouped])
+  }, [setGrouped, update])
 
 
   const deleteSubitem = useCallback(id => update({subitems: position.subitems.filter(s => s.id !== id)}), [update, position.subitems])
@@ -103,7 +107,7 @@ const PositionForm = ({
       </ValidatedItem>
       
       <ValidatedItem label="Изображение" valuePropName="fileList" required errors={position.imageErrors}>
-        <Upload listType="picture" maxCount={1} accept='image/*' action={`${host}/upload/${userId}`} onChange={({file}) => {update({image: file})}}>
+        <Upload listType="picture" maxCount={1} accept='*' action={`${host}/upload/${userId}`} onChange={({file}) => {update({image: file})}}>
           <Button icon={<CloudUploadOutlined />}>Загрузить</Button>
         </Upload>
       </ValidatedItem>
@@ -131,6 +135,7 @@ const PositionForm = ({
           checkedChildren={<CheckOutlined />}
           unCheckedChildren={<CloseOutlined />}
           checked={checked}
+          disabled={position.type === 1}
           onChange={e => {update({warehouse: e}); setChecked(e)}}
         />
         {checked && (
@@ -138,6 +143,7 @@ const PositionForm = ({
             <InputNumber 
               status={!!position.warehouseCountErrors.length && 'error'} 
               precision={0} 
+              disabled={position.type === 1}
               value={position.warehouseCount} 
               onChange={v => update({warehouseCount: v})}
             />
@@ -347,11 +353,11 @@ const App = ({tg, categories, bot_id, password, host, user_id, message_id, show_
           description: p.description,
           grouped: p.type === 1,
           image: p.image.response.path,
-          warehouse: p.warehouse,
+          warehouse: p.warehouse || null,
           warehouseCount: p.warehouseCount,
           subitems: p.subitems.map(s => ({
             name: s.title,
-            warehouse: s.warehouse,
+            warehouse: s.warehouse || null,
             warehouseCount: s.warehouseCount
           }))
         }))
