@@ -355,6 +355,7 @@ const App = ({tg, categories, bot_id, password, host, user_id, message_id, show_
           image: p.image.response.path,
           warehouse: p.warehouse || null,
           warehouseCount: p.warehouseCount,
+          category: p.category,
           subitems: p.subitems.map(s => ({
             name: s.title,
             warehouse: s.warehouse || null,
