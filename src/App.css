@@ -19,6 +19,11 @@ body {
   color: var(--tg-theme-text-color);
 }
 
+.description {
+  margin: 1rem 0.5rem;
+  color: var(--tg-theme-text-color);
+}
+
 .ant-upload-list-item {
   border-color: var(--tg-theme-button-color) !important;
 }
@@ -30,6 +35,7 @@ body {
 label, .ant-form-item-label {
   color: var(--tg-theme-text-color) !important;
   margin: 0.5rem;
+  white-space: normal;
 }
 
 .ant-input, .ant-input:hover, .ant-input-outlined, .ant-input-number-input {
@@ -94,6 +100,10 @@ label, .ant-form-item-label {
 
 .subitems {
   margin: .5rem;
+}
+
+.ant-form-item-control {
+  align-self: center;
 }
 
 .ant-select-selector, .ant-select-dropdown, .ant-select-item, .ant-select-open, .ant-select-selection-item {

@@ -159,6 +159,10 @@ const PositionForm = ({
       </Form.Item>
 
       {grouped && (
+        <div>
+          <p className='description'>
+            Выбирайте этот вариант, если вам нужна карточка с <b>общим названием, описанием и стоимостью</b>, но с возможностью добавлять <b>подтовары</b> – например, разные вкусы, размеры или вариации.
+          </p>
         <div className='subitems'>
           {position.subitems.map(s => {
             const updateSubitem = data => {
@@ -209,6 +213,7 @@ const PositionForm = ({
               <Button onClick={(addSubitem)}>Добавить подтовар</Button>
             </Form.Item>
           )}
+        </div>
         </div>
       )}
       {canDelete && (
